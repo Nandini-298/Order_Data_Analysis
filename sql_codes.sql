@@ -16,16 +16,17 @@ create table df_orders (
 	[sale_price] decimal(7,2),
 	[profit] decimal(7,2));
 
-	select * from df_orders
+select * from df_orders
 
-	--find top 10 highest revenue generating products
+1.--find top 10 highest revenue generating products
 
 select top 10 product_id, sum(sale_price) as sales
 from df_orders
 group by product_id
 order by sales desc
 
---find top 5 highest selling product in each region
+2--.find top 5 highest selling product in each region
+	
  with cte as(
  select product_id,region, sum(sale_price) as sales
  from df_orders
@@ -37,7 +38,8 @@ order by sales desc
  where rn<=5
 
 
- --find month over month growth comparison for 2022 and 2023 sales eg; jan 2022 vs jan 2023
+ 3.--find month over month growth comparison for 2022 and 2023 sales eg; jan 2022 vs jan 2023
+	
  with cte as(
  select year(order_date) as order_year, month(order_date) as order_month,
  sum(sale_price) as sales 
@@ -52,7 +54,8 @@ order by sales desc
  group by order_month
  order by order_month
 
- --for each category which month had highest sales
+ 4.--find for each category which month had highest sales
+	
   with cte as(
   
   select category,format(order_date,'yyyyMM') as order_year_month,
@@ -67,7 +70,7 @@ order by sales desc
   from cte) as a
   where rn=1
 
-  --which sub category had highest growth by profit in 2023 compare to 2022
+  5.--which sub category had highest growth by profit in 2023 compare to 2022
   
   with cte as(
   select sub_category,year(order_date) as order_year
